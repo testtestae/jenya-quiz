@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            overflow: hidden;
+        }
+        .my-screen{
+            height: 100vh;
+            font-size: 5rem;
+            text-align: center;
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .my-button{
+            background-color: #5565EB;
+            color: white;
+            border: 0;
+            font-size: 1em;
+            margin: .25em;
+            padding: .25em;
+            border-radius: .25em
+        }
+
+        .my-button-attention{
+            background-color: #ebc855;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+<!-- <script src="./src/libs/react.production.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" integrity="sha512-8Q6Y9XnTbOE+JNvjBQwJ2H8S+UV4uA6hiRykhdtIyDYZ2TprdNmWOUaKdGzOhyr4dCyk287OejbPvwl7lrfqrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- <script src="./src/libs/react-dom.production.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" integrity="sha512-MOCpqoRoisCTwJ8vQQiciZv0qcpROCidek3GTFS6KTk2+y7munJIlKCVkFCYY+p3ErYFXCjmFjnfTTRSC1OHWQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- <script src="./src/libs/babel.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.21.2/babel.min.js" integrity="sha512-ccYfmoFEslhbxS5qMNjCMtQEL6Yk6zJn8Bh3Y7hAVEi8K720q6l3MSD7JBWhY0CbITu7G+eaE4xjztDNeEizUQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script type="text/babel">
+    const rootNode = document.getElementById("app");     
+    const root = ReactDOM.createRoot(rootNode);
+    const {useState, useEffect} = React;
+
+    const mainQuestons = [
+    {
+        "question": "Как можно обратиться к Уполномоченному по правам ребёнка в Челябинской области?",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["7-10", "11-13", "14-17", "18+"],
+        "answers":[
+            {
+                "answer": "Социальная сеть «Вконтакте»"
+            }
+            ,{
+                "answer": "Официальный сайт"
+            }
+            ,{
+                "answer": "Робот Женя"
+            }
+            ,{
+                "answer": "Все перечисленные варианты",
+                "score": 1
+            }
+        ]
+    },{
+        "question": "Какое самое главное право ребенка?",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["7-10"],
+        "answers":[
+            {
+                "answer": "Право на отдых"
+            }
+            ,{
+                "answer": "Право на жизнь"
+                ,"score": 1
+            }
+            ,{
+                "answer": "Право на развитие"
+            }
+            ,{
+                "answer": "Право на участие"
+            }
+        ]
+    },{
+        "question": "Когда празднуется Международный день защиты детей?",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["7-10"],
+        "answers":[
+            {
+                "answer": "1 сентября"
+            }
+            ,{
+                "answer": "15 октября"
+            }
+            ,{
+                "answer": "7 февраля"
+            }
+            ,{
+                "answer": "1 июня",
+                "score": 1
+            }
+        ]
+    },{
+        "question": "Куда нужно обратиться, если в школе украли телефон?",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["7-10"],
+        "answers":[
+            {
+                "answer": "К старшеклассникам"
+            }
+            ,{
+                "answer": "К директору"
+            }
+            ,{
+                "answer": "В полицию"
+                ,"score": 1
+            }
+            ,{
+                "answer": "К охраннику"
+            }
+        ]
+    },{
+        "question": "До какого возраста человек в России считается ребенком?",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["7-10"],
+        "answers":[
+            {
+                "answer": "До 14 лет"
+            }
+            ,{
+                "answer": "До 16 лет"
+            }
+            ,{
+                "answer": "До 18 лет"
+                ,"score": 1
+            }
+            ,{
+                "answer": "По решению родителей"
+            }
+        ]
+    }
+    ,{
+        "question": "Со скольких лет ребенок наделяется правами?",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["11-13"],
+        "answers":[
+            {
+                "answer": "С рождения"
+                ,"score": 1
+            }
+            ,{
+                "answer": "С 7 лет"
+            }
+            ,{
+                "answer": "С 14 лет"
+            }
+            ,{
+                "answer": "С 18 лет"
+            }
+        ]
+    },{
+        "question": "Кто несет основную ответственность за ребенка?",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["11-13"],
+        "answers":[
+            {
+                "answer": "Школа"
+            }
+            ,{
+                "answer": "Родители"
+                ,"score": 1
+            }
+            ,{
+                "answer": "Государство"
+            }
+            ,{
+                "answer": "Суд"
+            }
+        ]
+    },{
+        "question": "Где ребенок имеет право свободно выражать свое мнение?",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["11-13"],
+        "answers":[
+            {
+                "answer": "В компании друзей"
+            }
+            ,{
+                "answer": "В семье"
+            }
+            ,{
+                "answer": "Во всех сферах жизни"
+                ,"score": 1
+            }
+            ,{
+                "answer": "Нигде"
+            }
+        ]
+    },{
+        "question": "Кто относится к законным представителям ребенка?",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["11-13"],
+        "answers":[
+            {
+                "answer": "Родители"
+                ,"score": 1
+            }
+            ,{
+                "answer": "Государство"
+            }
+            ,{
+                "answer": "Полиция"
+            }
+            ,{
+                "answer": "Школа"
+            }
+        ]
+    }
+    ,{
+        "question": "От каких слов происходит термин омбудсмен?",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["14-17"],
+        "answers":[
+            {
+                "answer": "«закон», «поручение» "
+            }
+            ,{
+                "answer": "«полномочие», «поручение» "
+                ,"score": 1
+            }
+            ,{
+                "answer": "«права», «защита» "
+            }
+            ,{
+                "answer": "«социум», «помощь» "
+            }
+        ]
+    },{
+        "question": "В каком возрасте дети имеют право самостоятельно обращаться в суд?",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["14-17"],
+        "answers":[
+            {
+                "answer": "В 14 лет"
+                ,"score": 1
+            }
+            ,{
+                "answer": "В 16 лет"
+            }
+            ,{
+                "answer": "В 18 лет"
+            }
+            ,{
+                "answer": "Не имеют право"
+            }
+        ]
+    },{
+        "question": "Кто на данный момент является Уполномоченным при Президенте РФ по правам ребенка? ",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["14-17"],
+        "answers":[
+            {
+                "answer": "Его нет "
+            }
+            ,{
+                "answer": "Алексей Иванович Головань "
+            }
+            ,{
+                "answer": "Павел Алексеевич Астахов"
+            }
+            ,{
+                "answer": "Мария Алексеевна Львова-Белова"
+                ,"score": 1
+            }
+        ]
+    },{
+        "question": "Какой международный документ гарантирует права и свободы детей?",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["14-17"],
+        "answers":[
+            {
+                "answer": "Конституция РФ"
+            }
+            ,{
+                "answer": "Конвенция о правах ребенка"
+                ,"score": 1
+            }
+            ,{
+                "answer": "Закон о защите прав детей"
+            }
+            ,{
+                "answer": "Свод детских прав"
+            }
+        ]
+    }
+    ,{
+        "question": "Как называется основной документ по правам ребенка, принятый 44 сессией Генеральной Ассамблеей ООН?",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["18+"],
+        "answers":[
+            {
+                "answer": "Конвенция о правах ребенка"
+                ,"score": 1
+            }
+            ,{
+                "answer": "Международный детский пакт"
+            }
+            ,{
+                "answer": "Декларация прав детей планеты"
+            }
+            ,{
+                "answer": "Конвенция о правах человека"
+            }
+        ]
+    },{
+        "question": "Кто несет ответственность за воспитание ребенка в случае развода родителей?",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["18+"],
+        "answers":[
+            {
+                "answer": "Тот родитель, с кем остались дети"
+            }
+            ,{
+                "answer": "Оба родителя"
+                ,"score": 1
+            }
+            ,{
+                "answer": "Мама"
+            }
+            ,{
+                "answer": "Папа"
+            }
+        ]
+    },{
+        "question": "Какие различия могут повлиять на различную реализацию детьми своих прав?",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["18+"],
+        "answers":[
+            {
+                "answer": "Социальный статус"
+            }
+            ,{
+                "answer": "Раса"
+            }
+            ,{
+                "answer": "Место жительства"
+            }
+            ,{
+                "answer": "Таких различий не существует"
+                ,"score": 1
+            }
+        ]
+    },{
+        "question": "С какого возраста ребёнок несёт уголовную ответственность за любые преступления?",
+        "groups":[
+            "Права ребенка"
+        ],
+        "ages": ["18+"],
+        "answers":[
+            {
+                "answer": "С 12 лет"
+            }
+            ,{
+                "answer": "С 14 лет"
+            }
+            ,{
+                "answer": "С 16 лет"
+                ,"score": 1
+            }
+            ,{
+                "answer": "С 18 лет"
+            }
+        ]
+    }
+
+    ,{
+        "question": "Где расположена Челябинская область? ",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["7-10"],
+        "answers":[
+            {
+                "answer": "Полярный Урал"
+            }
+            ,{
+                "answer": "Северный Урал"
+            }
+            ,{
+                "answer": "Средний Урал"
+            }
+            ,{
+                "answer": "Южный Урал"
+                ,"score": 1
+            }
+        ]
+    },{
+        "question": "Сколько лет исполнится Челябинску в 2022 году?",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["7-10"],
+        "answers":[
+            {
+                "answer": "176 лет"
+            }
+            ,{
+                "answer": "204 года"
+            }
+            ,{
+                "answer": "286 лет"
+                ,"score": 1
+            }
+            ,{
+                "answer": "312 лет"
+            }
+        ]
+    },{
+        "question": "Как называется второй по значимости город Челябинской области?",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["7-10", "14-17"],
+        "answers":[
+            {
+                "answer": "Магнитогорск"
+                ,"score": 1
+            }
+            ,{
+                "answer": "Миасс"
+            }
+            ,{
+                "answer": "Сатка"
+            }
+            ,{
+                "answer": "Аша"
+            }
+        ]
+    },{
+        "question": "Как называется центральная площадь города Челябинска?",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["7-10"],
+        "answers":[
+            {
+                "answer": "Красная площадь"
+            }
+            ,{
+                "answer": "Площадь Революции"
+                ,"score": 1
+            }
+            ,{
+                "answer": "Комсомольская площадь"
+            }
+            ,{
+                "answer": "Центральная площадь"
+            }
+        ]
+    },{
+        "question": "Какое животное изображено на гербе Челябинской области?",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["7-10", "11-13"],
+        "answers":[
+            {
+                "answer": "Верблюд"
+                ,"score": 1
+            }
+            ,{
+                "answer": "Волк"
+            }
+            ,{
+                "answer": "Тигр"
+            }
+            ,{
+                "answer": "Заяц"
+            }
+        ]
+    }
+    ,{
+        "question": "Какое мировое событие произошло в Челябинске в 2013 году?",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["11-13"],
+        "answers":[
+            {
+                "answer": "Прошли Олимпийские игры"
+            }
+            ,{
+                "answer": "Состоялась Всемирная олимпиада школьников"
+            }
+            ,{
+                "answer": "Упал метеорит"
+                ,"score": 1
+            }
+            ,{
+                "answer": "Изменилось название города"
+            }
+        ]
+    },{
+        "question": "Как называется главная река Челябинской области?",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["11-13"],
+        "answers":[
+            {
+                "answer": "Урал"
+                ,"score": 1
+            }
+            ,{
+                "answer": "Лена"
+            }
+            ,{
+                "answer": "Иртыш"
+            }
+            ,{
+                "answer": "Енисей"
+            }
+        ]
+    },{
+        "question": "С каким государством граничит Челябинская область? ",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["11-13"],
+        "answers":[
+            {
+                "answer": "Беларусь"
+            }
+            ,{
+                "answer": "Казахстан"
+                ,"score": 1
+            }
+            ,{
+                "answer": "Монголия"
+            }
+            ,{
+                "answer": "Грузия"
+            }
+        ]
+    },{
+        "question": "Сколько человек живет в Челябинской области?",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["11-13"],
+        "answers":[
+            {
+                "answer": "1,5 миллиона"
+            }
+            ,{
+                "answer": "2,5 миллиона"
+            }
+            ,{
+                "answer": "3,5 миллиона"
+                ,"score": 1
+            }
+            ,{
+                "answer": "4,5 миллиона"
+            }
+        ]
+    }
+    ,{
+        "question": "Сколько человек живет в Челябинской области?",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["14-17"],
+        "answers":[
+            {
+                "answer": "1,5 миллиона"
+            },{
+                "answer": "2,5 миллиона"
+            },{
+                "answer": "3,5 миллиона"
+                ,"score": 1
+            },{
+                "answer": "4,5 миллиона"
+            }
+        ]
+    },{
+        "question": "Какой город Челябинской области является самым солнечным в России?",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["14-17"],
+        "answers":[
+            {
+                "answer": "Аша"
+            },{
+                "answer": "Нязепетровск"
+            },{
+                "answer": "Троицк"
+                ,"score": 1
+            },{
+                "answer": "Сатка"
+            }
+        ]
+    },{
+        "question": "Этот город области назван в честь святого. Какой?",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["14-17"],
+        "answers":[
+            {
+                "answer": "Верхнеуральск"
+            },{
+                "answer": "Кыштым"
+            },{
+                "answer": "Златоуст"
+                ,"score": 1
+            },{
+                "answer": "Сим"
+            }
+        ]
+    },{
+        "question": "Кто из перечисленных героев по легенде зарыл клад на Южном Урале?",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["14-17"],
+        "answers":[
+            {
+                "answer": "Тамерлан"
+            },{
+                "answer": "Чингисхан"
+            },{
+                "answer": "Емельян Пугачев"
+                ,"score": 1
+            },{
+                "answer": "Лжедмитрий I"
+            }
+        ]
+    }
+    ,{
+        "question": "На сколько административных районов разделен Челябинск?",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["18+"],
+        "answers":[
+            {
+                "answer": "На 5"
+            },{
+                "answer": "На 6"
+            },{
+                "answer": "На 7"
+                ,"score": 1
+            },{
+                "answer": "На 8"
+            }
+        ]
+    },{
+        "question": "Как называли Челябинск в годы Великой Отечественной Войны?",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["18+"],
+        "answers":[
+            {
+                "answer": "Сталинград"
+            },{
+                "answer": "Танкоград"
+                ,"score": 1
+            },{
+                "answer": "Челябинск"
+            },{
+                "answer": "Ракетозаводск "
+            }
+        ]
+    },{
+        "question": "Какое современное культурное здание Челябинска построено примерно в том же месте, где в 1736 году появилась первая Челябинская крепость?",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["18+"],
+        "answers":[
+            {
+                "answer": "Законодательное собрание"
+            },{
+                "answer": "Мегаполис"
+            },{
+                "answer": "Кинотеатр «Родина»"
+                },{
+                    "answer": "Краеведческий музей"
+                    ,"score": 1
+            }
+        ]
+    },{
+        "question": "13 октября какого года родился миллионный житель Челябинска?",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["18+"],
+        "answers":[
+            {
+                "answer": "1968 года"
+            },{
+                "answer": "1976 года"
+                ,"score": 1
+            },{
+                "answer": "1989 года "
+            },{
+                "answer": "2006 года"
+            }
+        ]
+    },{
+        "question": "Как называлась главная река Челябинской области в древности?",
+        "groups":[
+            "Малая родина – Челябинская область"
+        ],
+        "ages": ["18+"],
+        "answers":[
+            {
+                "answer": "Ра"
+            },{
+                "answer": "Итиль"
+            },{
+                "answer": "Танаис"
+                },{
+                    "answer": "Яик"
+                    ,"score": 1
+            }
+        ]
+    }
+
+    ,{
+        "question": "Замените одним словом словосочетание «доброта души»",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["7-10"],
+        "answers":[
+            {
+                "answer": "Добросовестность"
+            },{
+                "answer": "Добродушие"
+                ,"score": 1
+            },{
+                "answer": "Доброта"
+            },{
+                "answer": "Добропорядочность"
+            }
+        ]
+    },{
+        "question": "Добрым можно назвать человека, который…",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["7-10"],
+        "answers":[
+            {
+                "answer": "Много улыбается"
+            },{
+                "answer": "Делает что-то полезное для людей"
+                ,"score": 1
+            },{
+                "answer": "Ждет, когда его позовут на помощь"
+            },{
+                "answer": "Разрушает все вокруг"
+            }
+        ]
+    },{
+        "question": "Как совершают добрые поступки?",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["7-10"],
+        "answers":[
+            {
+                "answer": "Чтобы избежать наказания"
+            },{
+                "answer": "В надежде на похвалу"
+            },{
+                "answer": "Ради своей выгоды"
+            },{
+                "answer": "От всей души, не ожидая ничего взамен"
+                ,"score": 1
+            }
+        ]
+    },{
+        "question": "Как можно помогать людям и стране?",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["7-10"],
+        "answers":[
+            {
+                "answer": "Стать волонтером и помогать бабушкам и волонтерам"
+            },{
+                "answer": "Отдать ненужные игрушки и книги в детский дом"
+            },{
+                "answer": "Поиграть с детьми, у которых нет родителей"
+                },{
+                    "answer": "Все перечисленные варианты"
+                    ,"score": 1
+            }
+        ]
+    },{
+        "question": "Закончите пословицу «Добро творить – себя …»",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["7-10"],
+        "answers":[
+            {
+                "answer": "Веселить"
+                ,"score": 1
+            },{
+                "answer": "Уважать"
+            },{
+                "answer": "Занимать"
+            },{
+                "answer": "Благодарить"
+            }
+        ]
+    }
+    ,{
+        "question": "Как совершают добрые дела?",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["11-13"],
+        "answers":[
+            {
+                "answer": "Бескорыстно и сознательно"
+                ,"score": 1
+            },{
+                "answer": "Чтобы избежать наказания"
+            },{
+                "answer": "В надежде на похвалу"
+            },{
+                "answer": "Ради своей выгоды"
+            }
+        ]
+    },{
+        "question": "Какой международный знак обозначает волонтерское движение?",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["11-13"],
+        "answers":[
+            {
+                "answer": "Русская буква В синего цвета"
+            },{
+                "answer": "Английская буква V красного цвета"
+                ,"score": 1
+            },{
+                "answer": "Две поднятых вверх руки"
+            },{
+                "answer": "Земной шар"
+            }
+        ]
+    },{
+        "question": "Закончите пословицу «Добро творить – себя …»",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["11-13"],
+        "answers":[
+            {
+                "answer": "Веселить"
+                ,"score": 1
+            },{
+                "answer": "Уважать"
+            },{
+                "answer": "Занимать"
+            },{
+                "answer": "Благодарить"
+            }
+        ]
+    },{
+        "question": "В какой волонтерской организации состояли ваши бабушки и дедушки?",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["11-13"],
+        "answers":[
+            {
+                "answer": "Скауты"
+            },{
+                "answer": "Пионерское движение"
+                ,"score": 1
+            },{
+                "answer": "Тимуровцы"
+            },{
+                "answer": "Российское движение школьников"
+            }
+        ]
+    },{
+        "question": "В какой стране впервые появилась женская волонтерская организация?",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["11-13"],
+        "answers":[
+            {
+                "answer": "Россия"
+                ,"score": 1
+            },{
+                "answer": "США"
+            },{
+                "answer": "Великобритания"
+            },{
+                "answer": "Турция"
+            }
+        ]
+    }
+    ,{
+        "question": "Какого числа в России отмечают День волонтера?",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["14-17"],
+        "answers":[
+            {
+                "answer": "5 декабря"
+                ,"score": 1
+            },{
+                "answer": "6 ноября"
+            },{
+                "answer": "4 августа"
+            },{
+                "answer": "12 мая"
+            }
+        ]
+    },{
+        "question": "Кого обычно называют филантропом?",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["14-17"],
+        "answers":[
+            {
+                "answer": "Человека, который занимается цветами"
+            },{
+                "answer": "Человека, занимающего благотворительной деятельностью"
+                ,"score": 1
+            },{
+                "answer": "Государственного служащего"
+            },{
+                "answer": "Корыстного бизнесмена"
+            }
+        ]
+    },{
+        "question": "Как называется крупнейший благотворительный фонд Челябинска, помогающий онкобольным детям?",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["14-17"],
+        "answers":[
+            {
+                "answer": "Искорка"
+                ,"score": 1
+            },{
+                "answer": "Фиалки"
+            },{
+                "answer": "Фонд детства"
+            },{
+                "answer": "Онко.нет"
+            }
+        ]
+    },{
+        "question": "Какого числа в России отмечают День волонтера? ",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["14-17"],
+        "answers":[
+            {
+                "answer": "5 декабря"
+                ,"score": 1
+            },{
+                "answer": "6 ноября"
+            },{
+                "answer": "4 августа"
+            },{
+                "answer": "12 мая"
+            }
+        ]
+    },{
+        "question": "Какая самая известная гуманитарная организация осуществляет свою деятельность во всём мире, исходя из принципа нейтральности и беспристрастности и оказывая безвозмездно профессиональную медицинскую помощь?",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["14-17"],
+        "answers":[
+            {
+                "answer": "Красный крест"
+            },{
+                "answer": "Синий полумесяц"
+            },{
+                "answer": "ООН"
+                ,"score": 1
+            },{
+                "answer": "ЮНЕСКО"
+            }
+        ]
+    }
+    ,{
+        "question": "Официальной датой основания волонтерского движения считают",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["18+"],
+        "answers":[
+            {
+                "answer": "1914 год"
+            },{
+                "answer": "1920 год"
+                ,"score": 1
+            },{
+                "answer": "1945 год"
+            },{
+                "answer": "1956 год"
+            }
+        ]
+    },{
+        "question": "Назовите, какое движение в пионерии стало основой для волонтёрской деятельности?",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["18+"],
+        "answers":[
+            {
+                "answer": "Тимуровское движение"
+                ,"score": 1
+            },{
+                "answer": "Скаутское движение"
+            },{
+                "answer": "Юные инспекторы дорожного движения"
+            },{
+                "answer": "Армия детства и юношества"
+            }
+        ]
+    },{
+        "question": "Кто может стать волонтером?",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["18+"],
+        "answers":[
+            {
+                "answer": "Любой гражданин старше 14 лет"
+                ,"score": 1
+            },{
+                "answer": "Совершеннолетний гражданин"
+            },{
+                "answer": "Гражданин любого возраста"
+            },{
+                "answer": "Человек, вступивший в волонтерскую организацию"
+            }
+        ]
+    },{
+        "question": "Первая юношеская добровольческая организация – скауты, впервые появившаяся в Великобритании, а затем и в России. Какие слова стали лозунгом скаутов?",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["18+"],
+        "answers":[
+            {
+                "answer": "Ни одного дня без доброго дня!"
+            },{
+                "answer": "На помощь людям! "
+            },{
+                "answer": "Будь готов!"
+                ,"score": 1
+            },{
+                "answer": "Спеши делать добро!"
+            }
+        ]
+    },{
+        "question": "Какая самая известная гуманитарная организация осуществляет свою деятельность во всём мире, исходя из принципа нейтральности и беспристрастности и оказывая безвозмездно профессиональную медицинскую помощь?",
+        "groups":[
+            "Благотворительность и волонтерство"
+        ],
+        "ages": ["18+"],
+        "answers":[
+            {
+                "answer": "Красный крест"
+                ,"score": 1
+            },{
+                "answer": "Синий полумесяц"
+            },{
+                "answer": "ООН"
+            },{
+                "answer": "ЮНЕСКО"
+            }
+        ]
+    }
+]
+
+    const App = ()=>{
+        const howLongToShowTheRightAnswer = 250;
+        const [questions, setQuestions] = useState(mainQuestons);
+        const [groupsList, setGroupsList] = useState([]);
+        const [agesList, setAgesList] = useState([]);
+        const [currentData, setCurrentData] = useState({})
+        const [currentQuestions, setCurrentQuestions] = useState(mainQuestons)
+        const [score, setScore] = useState(0);
+        const [appState, setAppState] = useState(false);
+        const [watchCorrectAnswer, setWatchCorrectAnswer] = useState(false);
+        const [clickPermission, setClickPermission] = useState(true);
+
+        //вычленяем возраст и группы (у каждого возраста и группы свои вопросы, в json можно прописать кому задавать вопросы а кому нет)
+        useEffect(()=>{
+            const searchUniqueItems = (whereSearch, whatToSortOut=questions)=>{
+                let sortItems=[];
+                whatToSortOut.map((e)=>{
+                    sortItems = Array.from(new Set(sortItems.concat(e[whereSearch])));
+                })
+                return sortItems
+            }
+            setGroupsList(searchUniqueItems("groups"));
+            setAgesList(searchUniqueItems("ages"))
+        },[questions])
+
+        //формируем вопросы исходя из того какой возраст и группу указал пользователь
+        useEffect(()=>{
+            let groupSort = [];
+            let ageSort = [];
+            questions.map((question)=>{
+                question?.groups.map((group)=>{
+                    if (group === currentData?.group) {
+                        groupSort.push(question);
+                        return;
+                    }
+                })
+            })
+            groupSort.map((question)=>{
+                question?.ages.map((age)=>{
+                    if (age === currentData?.age) {
+                        ageSort.push(question);
+                        return;
+                    }
+                })
+            })
+            setCurrentQuestions(ageSort);
+        },[currentData])
+
+
+        const HelloScreen = ()=>{
+            return(
+                <section className="my-screen">
+                <button
+                        className="my-button"
+                        onClick={()=>{
+                            setAppState("quiz");
+                        }}
+                >Начать викторину</button>
+                <button
+                        className="my-button"
+                        onClick={()=>{
+                            setAppState("appeal");
+                        }}
+                >Написать обращение</button>
+
+
+                </ section>
+            )
+        }
+
+        const Appeal = ()=>{
+            return(
+                <section className="my-screen">
+                    <iframe
+                        class="child-elem"
+                        src="https://b24-eanxis.bitrix24.site/crm_form16/"
+                        frameborder="0"
+                        height="1700"
+                        width="900"
+                    ></iframe>
+                    <CloseQuizButton text="Назад" />
+                </section>
+            )
+        }
+
+        const CloseQuizButton = (props)=>{
+            return(
+                <button
+                        style = {props?.style}
+                        className="my-button"
+                        onClick={()=>{
+                            // setAppState(false)
+                            setQuestions(mainQuestons)
+                            setScore(0);
+                            window.location.reload()
+                        }}
+                    >{props.text}</button>
+            )
+        }
+
+        const PreQuizScreen1 = ()=>{
+            return(
+                // !currentData?.age && (
+                <section className="my-screen">
+                <h4>Сколько Тебе лет?</h4>
+                {agesList.map((age)=>{
+                    return <button
+                    className='my-button'
+                    onClick={
+                        ()=>{
+                        setCurrentData({...currentData, "age":age});
+                        }
+                    }
+                    >{age}</button>
+                })}
+                </section>
+                )
+            // )
+        }
+
+        const PreQuizScreen2 = ()=>{return(
+            // currentData?.age && !currentData?.group && (
+                <section className="my-screen">
+                <h4>Вопросы какой категории выбираешь?</h4>
+                {groupsList.map((group)=>{
+                    return <button
+                    className='my-button'
+                    onClick={
+                        ()=>{
+                        setCurrentData({...currentData, "group":group});
+                        }
+                    }
+                    >{group}</button>
+                })}
+                </section>
+            // )
+        )}
+
+        const QuizScreen = (props)=>{
+            return(
+                <section className="my-screen">
+                    <CloseQuizButton 
+                        style={{
+                            position: "fixed",
+                            top: "5px",
+                            left: "5px",
+                            fontSize: ".25em"
+                        }}
+                        text="Назад" 
+                    />
+                    <h4>{currentQuestions[0]?.question}</h4>
+                    {currentQuestions[0]?.answers.map((answer)=>{
+                        return <button
+                        className={`my-button ${watchCorrectAnswer && answer?.score > 0 && "my-button-attention"}`}
+                        onClick={()=>{
+                        
+                            if (clickPermission) {
+                                clickPermission && answer?.score > 0 && setScore(score + answer.score);
+                                let bufferObject = [...currentQuestions];
+                                bufferObject.shift();
+                                setWatchCorrectAnswer(true);
+                                setTimeout(()=>{
+                                    setWatchCorrectAnswer(false);
+                                    setCurrentQuestions(bufferObject)
+                                    setClickPermission(true)
+                                }, howLongToShowTheRightAnswer);
+                            }
+
+                        
+                        }}
+                        >{answer?.answer}</button>
+                    })}
+                </section>
+            )
+        }
+
+        const QuizAll = ()=>{
+            if (!currentData?.age) {
+                return <PreQuizScreen1/>
+            } else if (currentData?.age && !currentData?.group) {
+                return <PreQuizScreen2 />
+            } else if ( currentData?.age && currentData?.group && currentQuestions.length>0) {
+                return <QuizScreen />
+            } else {
+                return <Result />
+            }
+        }
+
+        const Result = ()=>{
+            return(
+                <section className="my-screen">
+                    <h4>Количество баллов: {score}</h4>
+                    <CloseQuizButton text="Еще раз"/>
+                    <button
+                        className="my-button"
+                        onClick={()=>{
+                            // location.reload()
+                            setAppState("appeal");
+                        }}
+                    >Написать обращение</button>
+                </section>
+            )
+        }
+        
+        return (
+            <div className="App">
+                {!appState ? <HelloScreen/> : null}
+                {appState === "appeal" ? <Appeal/> : null}
+
+                {
+                    // appState === "quiz"? currentQuestions.length>0?<QuizScreen/>:<Result/> : null
+                    appState === "quiz" ? <QuizAll/> :null
+                }
+                
+            </div>
+        );
+    }
+
+    root.render(
+        <App />
+    );
+    </script>
+</body>
+</html>
